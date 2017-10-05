@@ -1,0 +1,53 @@
+azs:
+- name: z1
+  cloud_properties:
+    datacenters:
+    - clusters: [((vcenter_cluster)): {}]
+- name: z2
+  cloud_properties:
+    datacenters:
+    - clusters: [((vcenter_cluster)): {}]
+- name: z3
+  cloud_properties:
+    datacenters:
+    - clusters: [((vcenter_cluster)): {}]
+
+vm_types:
+- name: default
+  cloud_properties:
+    cpu: 2
+    ram: 1024
+    disk: 3240
+- name: large
+  cloud_properties:
+    cpu: 2
+    ram: 4096
+    disk: 30_240
+
+networks:
+- name: default
+  type: manual 
+  subnets:
+  - range: 10.193.64.0/24
+    gateway: 10.193.64.1
+    dns: [10.193.64.2]
+    reserved: [10.193.64.1-10.193.64.239,10.193.64.247-10.193.64.255]
+    static: [10.193.64.241,10.193.64.242,10.193.64.243]
+    azs: [z1, z2, z3]
+    cloud_properties:
+      name: VM Network
+
+
+disk_types:
+- name: default
+  disk_size: 3000
+- name: large
+  disk_size: 50_000
+
+compilation:
+  workers: 1
+  reuse_compilation_vms: true
+  az: z1
+  vm_type: default
+  network: default
+
